@@ -5,6 +5,8 @@ Core ML logic: Z-score anomaly detection + Isolation Forest
 
 import numpy as np
 import pandas as pd
+
+def run_isolation_forest(amounts, contamination=0.1, random_state=42):
 from sklearn.ensemble import IsolationForest
 from typing import List, Dict, Any
 import logging
