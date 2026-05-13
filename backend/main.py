@@ -1,23 +1,24 @@
 """
 main.py
 FastAPI application – Fraud Detection System
+Kept lightweight so Leapcell / serverless platforms start within timeout.
 """
 
 import logging
 import sys
 from contextlib import asynccontextmanager
-from typing import List, Optional
+from typing import List
 
-import uvicorn
 from fastapi import FastAPI, File, HTTPException, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
 
+# ── heavy imports are inside fraud_model functions (lazy) ──
 from backend.fraud_model import analyze_transactions
 from backend.utils import parse_csv_bytes, summarise, validate_single
 
 # ──────────────────────────────────────────────
-# Logging
+# Logging  (minimal — no heavy setup)
 # ──────────────────────────────────────────────
 
 logging.basicConfig(
@@ -29,14 +30,14 @@ logger = logging.getLogger(__name__)
 
 
 # ──────────────────────────────────────────────
-# Lifespan (startup / shutdown)
+# Lifespan  (keep startup logic minimal)
 # ──────────────────────────────────────────────
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("🚀 Fraud Detection API is starting up …")
+    logger.info("Fraud Detection API started.")   # no heavy work here
     yield
-    logger.info("🛑 Fraud Detection API is shutting down …")
+    logger.info("Fraud Detection API stopped.")
 
 
 # ──────────────────────────────────────────────
@@ -55,7 +56,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # tighten in production
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -67,7 +68,7 @@ app.add_middleware(
 
 class TransactionIn(BaseModel):
     transaction_id: str = Field(..., min_length=1, examples=["TXN001"])
-    amount: float = Field(..., gt=0, examples=[250.00])
+    amount: float       = Field(..., gt=0,         examples=[250.00])
 
     @field_validator("amount")
     @classmethod
@@ -83,11 +84,11 @@ class BatchRequest(BaseModel):
 
 class TransactionResult(BaseModel):
     transaction_id: str
-    amount: float
-    z_score: float
-    anomaly_flag: bool
-    risk_score: float
-    risk_level: str
+    amount:         float
+    z_score:        float
+    anomaly_flag:   bool
+    risk_score:     float
+    risk_level:     str
 
 
 class BatchResponse(BaseModel):
@@ -96,7 +97,7 @@ class BatchResponse(BaseModel):
 
 
 # ──────────────────────────────────────────────
-# Health check
+# Health  (responds instantly — no ML involved)
 # ──────────────────────────────────────────────
 
 @app.get("/", tags=["Health"])
@@ -121,20 +122,7 @@ def health():
     tags=["Prediction"],
 )
 def predict_json(payload: BatchRequest):
-    """
-    Accept a JSON array of transactions and return fraud-detection results.
-
-    **Example request body**
-    ```json
-    {
-      "transactions": [
-        {"transaction_id": "TXN001", "amount": 150.0},
-        {"transaction_id": "TXN002", "amount": 9500.0}
-      ]
-    }
-    ```
-    """
-    logger.info("POST /predict (JSON) — %d transactions", len(payload.transactions))
+    logger.info("POST /predict — %d transactions", len(payload.transactions))
     try:
         records = [t.model_dump() for t in payload.transactions]
         results = analyze_transactions(records)
@@ -156,18 +144,11 @@ def predict_json(payload: BatchRequest):
     tags=["Prediction"],
 )
 async def predict_csv(file: UploadFile = File(...)):
-    """
-    Upload a CSV file with columns `transaction_id` and `amount`.
-    Returns fraud-detection results for every row.
-    """
     if not file.filename.endswith(".csv"):
-        raise HTTPException(
-            status_code=422,
-            detail="Only .csv files are accepted.",
-        )
+        raise HTTPException(status_code=422, detail="Only .csv files are accepted.")
 
     content = await file.read()
-    logger.info("POST /predict/csv — file: %s (%d bytes)", file.filename, len(content))
+    logger.info("POST /predict/csv — %s (%d bytes)", file.filename, len(content))
 
     try:
         records = parse_csv_bytes(content)
@@ -183,7 +164,7 @@ async def predict_csv(file: UploadFile = File(...)):
 
 
 # ──────────────────────────────────────────────
-# POST /predict/single  – convenience endpoint
+# POST /predict/single
 # ──────────────────────────────────────────────
 
 @app.post(
@@ -194,12 +175,6 @@ async def predict_csv(file: UploadFile = File(...)):
     tags=["Prediction"],
 )
 def predict_single(transaction: TransactionIn):
-    """
-    Convenience endpoint to check one transaction.
-    *Note*: Z-score and Isolation Forest are computed on a dataset
-    of one point, so anomaly detection is less reliable here.
-    Use `/predict` for batch analysis.
-    """
     logger.info(
         "POST /predict/single — id=%s amount=%.2f",
         transaction.transaction_id,
@@ -216,9 +191,3 @@ def predict_single(transaction: TransactionIn):
         raise HTTPException(status_code=500, detail=str(exc)) from exc
 
 
-# ──────────────────────────────────────────────
-# Dev runner
-# ──────────────────────────────────────────────
-
-if __name__ == "__main__":
-    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)
