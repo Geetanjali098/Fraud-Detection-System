@@ -18,9 +18,9 @@
 | | URL |
 |---|---|
 | 🖥️ **Web Dashboard (Frontend)** | `https://fraud-detection-system0.streamlit.app` |
-| ⚙️ **API Backend** | `https://geetanjali09-fraud-detection-system-api.hf.space` |
-| 📖 **Interactive API Docs** | `https://geetanjali09-fraud-detection-system-api.hf.space/docs` |
-| ❤️ **API Health Check** | `https://geetanjali09-fraud-detection-system-api.hf.space/health` |
+| ⚙️ **API Backend** | `https://geetanjali09-fraud-detection-api.hf.space` |
+| 📖 **Interactive API Docs** | `https://geetanjali09-fraud-detection-api.hf.space/docs` |
+| ❤️ **API Health Check** | `https://geetanjali09-fraud-detection-api.hf.space/health` |
 | 💾 **Source Code** | [github.com/Geetanjali098/Fraud-Detection-System](https://github.com/Geetanjali098/Fraud-Detection-System) |
 
 > 💡 **Quick test:** Open the dashboard → upload `data/sample_data.csv` → click **Analyze** → see results instantly!
