@@ -1,6 +1,6 @@
 # 🛡️ Fraud Detection System
 
-> An AI-powered web application that automatically scans financial transactions,
+> A web application that automatically scans financial transactions,
 > scores them for risk, and flags suspicious ones — built with a FastAPI backend
 > deployed on **Hugging Face** and an interactive dashboard deployed on **Streamlit Cloud**.
 
@@ -88,8 +88,6 @@ better accuracy than relying on just one.
 
 ### 🔢 Algorithm 1 — Z-Score (Statistical Method)
 
-**Plain English:**
-
 Imagine your customers typically spend between $50 and $300 per transaction.
 That is your normal range. Now someone spends $14,000 in one transaction.
 That is statistically very far from normal — it stands out immediately.
@@ -114,8 +112,6 @@ $14,000 transaction →  Z-score = 4.8  →  Very suspicious 🚨
 ---
 
 ### 🌲 Algorithm 2 — Isolation Forest (Machine Learning)
-
-**Plain English:**
 
 Imagine a guessing game where you ask yes/no questions to separate one
 transaction from all the others. For example:
