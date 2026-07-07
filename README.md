@@ -17,7 +17,7 @@
 
 | | URL |
 |---|---|
-| 🖥️ **Web Dashboard (Frontend)** | `https://geetanjali098-fraud-detection-system.streamlit.app` |
+| 🖥️ **Web Dashboard (Frontend)** | `https://fraud-detection-system0.streamlit.app` |
 | ⚙️ **API Backend** | `https://geetanjali09-fraud-detection-system-api.hf.space` |
 | 📖 **Interactive API Docs** | `https://geetanjali09-fraud-detection-system-api.hf.space/docs` |
 | ❤️ **API Health Check** | `https://geetanjali09-fraud-detection-system-api.hf.space/health` |
