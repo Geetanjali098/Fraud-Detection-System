@@ -286,8 +286,10 @@ https://geetanjali098-fraud-detection-system.streamlit.app
 ```
 https://huggingface.co/spaces/Geetanjali09/fraud-detection-api
 ```
-2.) OR connect with your localhostURL.
-
+2.) connect with your localhostURL or these given backend API
+```
+https://geetanjali09-fraud-detection-api.hf.space
+```
 **Step 3 — Upload CSV tab:**
 
 Your CSV must have these two columns:
