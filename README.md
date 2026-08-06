@@ -280,7 +280,15 @@ This makes the code easy to test, debug, and extend.
 https://geetanjali098-fraud-detection-system.streamlit.app
 ```
 
-**Step 2 — Upload CSV tab:**
+**Step 2 — Connect With API:**
+
+1.) Restart the given hugging face spaces n fill the API base URL:
+```
+https://huggingface.co/spaces/Geetanjali09/fraud-detection-api
+```
+2.) OR connect with your localhostURL.
+
+**Step 3 — Upload CSV tab:**
 
 Your CSV must have these two columns:
 ```csv
@@ -294,14 +302,14 @@ TXN003,75.50
 - Click **"🔍 Analyze CSV"**
 - Results appear below with charts and risk levels
 
-**Step 3 — Manual Entry tab:**
+**Step 4 — Manual Entry tab:**
 
 - Type a Transaction ID (e.g. `TXN_TEST`)
 - Enter an amount (e.g. `12000`)
 - Click **"➕ Add Row"** — add as many as you want
 - Click **"🔍 Analyze"**
 
-**Step 4 — Read the results:**
+**Step 5 — Read the results:**
 
 ```
 📊 Summary Cards
